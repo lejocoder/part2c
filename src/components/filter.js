@@ -1,29 +1,17 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import axios from 'axios'
-const Filter = ({countries}) => {
+import React, {useState} from 'react'
+import View from './view'
+const Filter = ({countries, submit}) => {
     // we do [0] here because the length is only of 1!
     //console.log(countries[0])
-    if (countries.length == 1) {
-        const languagesArray = countries[0].languages
+    // we had to do something weird here
+    const [showCountry, setShowCountry] = useState([])
+    const showHandler = (props) => {
+        setShowCountry(props.country)
+    }
+    
+    if (countries.length === 1) {
         return (
-            <div>
-                <h1>
-                    {countries[0].name}
-                </h1>
-                <body>
-                    <p>
-                        capital {countries[0].capital}
-                        <br></br>
-                        population {countries[0].population}
-                        <h2>languages</h2>
-                        <ul>
-                            {languagesArray.map(language => <li>{language.name}</li>)}
-                        </ul>
-                        <img src= {countries[0].flag} alt= 'picture of ${countries[0].flag}' width = "250" length = "250" />
-                    </p>
-                </body>
-            </div>
+            <View country = {countries[0]}/>
         )
     }
     else if (countries.length > 10) {
@@ -31,16 +19,27 @@ const Filter = ({countries}) => {
             <div>
                 Too many matches, specify another filter
             </div>
-             
         )
     }
     else {
         return (
-            <div>
-                {countries.map(country => <li key= {country.alpha2Code}>{country.name}</li>)} 
-            </div>
+            <ul>
+                {countries.map(function(country) {
+
+                    return (
+                        <div>
+                            
+                            <li key= {country.name}>{country.name} <button type = "button" onClick = {submit} value={country.name}>show</button></li>
+                            
+                        </div>
+                    )
+                })} 
+                
+                
+            </ul>
         )
     }
+    
 }
 
 export default Filter
